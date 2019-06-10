@@ -70,6 +70,7 @@ VPNMAC=${vpnmacaddr[$1-1]}
 
 rm -rf /root/n2n
 yum install git -y
+cd /root/
 git clone https://github.com/meyerd/n2n.git
 yum install cmake -y
 mkdir /root/n2n/n2n_v2/build/
