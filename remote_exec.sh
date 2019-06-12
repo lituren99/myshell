@@ -4,43 +4,53 @@ if [ $# -ne 1 ]; then
 	exit -1
 fi
 localip=(
-192.168.1.108
-192.168.1.67
-192.168.1.200
-192.168.1.98
-192.168.1.107
-192.168.1.25
-192.168.1.122
-192.168.1.110
-192.168.1.247
-192.168.1.15
-192.168.1.250
-192.168.1.190
-192.168.1.195
-192.168.1.160
-192.168.1.57
-192.168.1.44
-192.168.1.85
-192.168.1.100
+172.31.0.45
+172.31.0.37
+172.31.0.18
+172.31.0.67
+172.31.0.28
+172.31.0.40
+172.31.0.44
+172.31.0.42
+172.31.0.22
+172.31.0.39
+172.31.0.27
+172.31.0.32
+172.31.0.29
+172.31.0.52
+172.31.0.30
+172.31.0.38
+172.31.0.41
+172.31.0.26
 )
-
+vpnipaddr=(
+192.168.100.241
+192.168.100.242
+192.168.100.243
+192.168.100.21
+192.168.100.22
+192.168.100.23
+192.168.100.24
+192.168.100.25
+192.168.100.26
+192.168.100.27
+192.168.100.28
+192.168.100.29
+192.168.100.30
+192.168.100.31
+192.168.100.32
+192.168.100.33
+192.168.100.34
+192.168.100.35
+)
 NUM=$1
 IP=${localip[$NUM-1]}
-#echo "exec yum install -y git && cd /root/ && rm -rf /root/myshell &&git clone https://github.com/lituren99/myshell.git && sh /root/myshell/remote_install-n2n.sh  $NUM on root@$IP"
-
-#ssh root@$IP "yum install -y git && cd /root/ && rm -rf /root/myshell &&git clone https://github.com/lituren99/myshell.git && sh /root/myshell/remote_install-n2n.sh  $NUM"
-
-set timeout 30
-expect<<-END
-   spawn ssh root@$IP "yum install -y git && cd /root/ && rm -rf /root/myshell && git clone https://github.com/lituren99/myshell.git && sh /root/myshell/remote_install-n2n.sh  $NUM" 
-   expect "password:"
-   send "llkjA1b2c3d4\r"
-expect "min/avg/max/mdev ="
-exit
-END
-ping 192.168.100.$NUM -c 5
-
-
-
-
+VPNIP=${vpnipaddr[$NUM-1]}
+PWD="llkjA1b2c3d4"
+CMD="/root/myshell/remote_install-n2n.sh"
+#echo "/root/myshell/execute.expect $IP $NUM $PWD $CMD"
+#ssh root@$IP "bash -s" <$CMD $NUM 
+#/root/myshell/execute.expect $IP $NUM $PWD $CMD
+./exescpt.exp $IP $PWD $CMD $NUM
+ping $VPNIP -c 5
 
