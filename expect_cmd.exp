@@ -1,0 +1,31 @@
+#!/usr/bin/expect -f
+set force_conservative 0  ;
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+if {$argc < 2} {
+   puts "Usage: expect_cmd.exp password Command parameters..."
+   puts "for example: expect_cmd.exp password scp -r /root/test root@192.168.1.1:/root/"
+   exit
+}
+
+set PWD [lindex $argv 0]
+set CMD [lrange  $argv 1 $argc]
+
+
+set timeout -1
+spawn $env(SHELL)
+match_max 100000
+expect  "*# "
+send -- "$CMD\r"
+expect {
+	"password:" {send -- "$PWD\r"}
+	"(yes/no)?" {send -- "yes\r"; exp_continue}
+}
+expect  "*# "
+send -- "exit\r"
+expect eof
