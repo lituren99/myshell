@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+set force_conservative 0  ;
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+if {$argc < 4} {
+   puts "Usage: expect_exescpt.exp IP Usr password Command parameters..."
+   puts "for example: expect_exescpt.exp 192.168.1.1 root password test.sh a b c d ...."
+   exit
+}
+
+set IP [lindex $argv 0]
+set USR [lindex $argv 1]
+set PWD [lindex $argv 2]
+set CMD [lrange  $argv 3 $argc]
+#puts "ssh $USR@$IP 'bash -s '<$CMD\r"
+set timeout -1
+spawn $env(SHELL)
+match_max 100000
+expect  "*# "
+send -- "ssh $USR@$IP 'bash -s '<$CMD\r"
+expect {
+	"password:" {send -- "$PWD\r"}
+	"(yes/no)?" {send -- "yes\r"; exp_continue}
+}
+expect  "*# "
+send -- "exit\r"
+expect eof

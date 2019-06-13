@@ -46,11 +46,9 @@ vpnipaddr=(
 NUM=$1
 IP=${localip[$NUM-1]}
 VPNIP=${vpnipaddr[$NUM-1]}
+USR="root"
 PWD="llkjA1b2c3d4"
 CMD="/root/myshell/remote_install-n2n.sh"
-#echo "/root/myshell/execute.expect $IP $NUM $PWD $CMD"
-#ssh root@$IP "bash -s" <$CMD $NUM 
-#/root/myshell/execute.expect $IP $NUM $PWD $CMD
-./exescpt.exp $IP $PWD $CMD $NUM
+./expect_exescpt.exp $IP $USR $PWD $CMD $NUM
 ping $VPNIP -c 5
 
