@@ -23,9 +23,10 @@ vpnipaddr=(
 
 USR="root"
 PWD="llkjA1b2c3d4"
+CMD="/root/myshell/get-docker.sh --mirror Aliyun"
 
 for ip in ${vpnipaddr[@]} do
-   ./expect_cmd.exp $PWD ssh $USR@$ip yum install docker-ce -y
+   ./expect_exescpt.exp $IP $USR $PWD $CMD
 done
 
 
