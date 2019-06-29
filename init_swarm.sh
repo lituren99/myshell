@@ -5,36 +5,26 @@ if [ $# -ne 1 ]; then
 fi
 
 vpnipaddr=(
-192.168.100.241
-192.168.100.242
-192.168.100.243
-192.168.100.21
-192.168.100.22
-192.168.100.23
-192.168.100.24
-192.168.100.25
-192.168.100.26
-192.168.100.27
-192.168.100.28
-192.168.100.29
-192.168.100.30
-192.168.100.31
-192.168.100.32
-192.168.100.33
-192.168.100.34
-192.168.100.35
+192.168.100.36
+192.168.100.37
+192.168.100.38
 )
 
 USR="root"
 PWD="llkjA1b2c3d4"
 
 managerip=$1
+./expect_cmd.exp $PWD ssh $USR@$managerip  systemctl start docker
+./expect_cmd.exp $PWD ssh $USR@$managerip docker swarm leave -f
 ./expect_cmd.exp $PWD ssh $USR@$managerip docker swarm init --advertise-addr $managerip
 joinswarmcmd=`./expect_cmd.exp $PWD ssh $USR@$managerip docker swarm join-token worker | awk '{if($1=="docker") print $0}'`
-
-for workerip in ${vpnipaddr[@]} do
-   #echo $ip   
-   if [$workerip -ne $MGRIP]; then 
-      ./expect_cmd.exp $PWD ssh $USR@$workerip joinswarmcmd
+#echo "test : $joinswarmcmd"
+for workerip in ${vpnipaddr[@]} 
+do
+#   echo "workip:$workerip / mgrip:$managerip"
+   if [ "$managerip" != "$workerip" ];then 
+     ./expect_cmd.exp $PWD ssh $USR@$workerip systemctl start docker
+     ./expect_cmd.exp $PWD ssh $USR@$workerip docker swarm leave -f 
+     ./expect_cmd.exp $PWD ssh $USR@$workerip "\"${joinswarmcmd}\""
    fi
 done

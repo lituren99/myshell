@@ -16,6 +16,7 @@ if {$argc < 2} {
 set PWD [lindex $argv 0]
 set CMD [lrange  $argv 1 $argc]
 
+#puts "/$CMD"
 
 set timeout -1
 spawn $env(SHELL)
