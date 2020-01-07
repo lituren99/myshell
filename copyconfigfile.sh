@@ -25,7 +25,7 @@ do
     #echo "$peername-->$orgname--->$domain----->$ip"
     src="$rootdir/crypto-config/peerOrganizations/$orgname/peers/$peername"
     dst="/root/fabric"
-    ./expect_cmd.sh $PWD ssh -p $PORT root@$ip rm -rf $dst/crypto-config
+    ./expect_cmd.sh $PWD ssh -p $PORT root@$ip rm -rf $dst/crypto-config/peerOrganizations
     ./expect_cmd.sh $PWD ssh -p $PORT root@$ip mkdir -p $dst/crypto-config/peerOrganizations/$orgname/peers
     ./expect_cmd.sh $PWD scp -r -P $PORT $src  root@$ip:$dst/crypto-config/peerOrganizations/$orgname/peers
     #echo "/root/myshell/expect_cmd.exp $password scp -r -P 8480 $src root@$ip:$dst/"
@@ -48,7 +48,7 @@ do
     src="$rootdir/crypto-config/ordererOrganizations/$domain/orderers/$ordername"
     dst="/root/fabric"
     #echo "$PWD ssh -p $PORT root@$ip rm -rf $dst/crypto-config"
-    ./expect_cmd.sh $PWD ssh -p $PORT root@$ip rm -rf $dst/crypto-config
+    ./expect_cmd.sh $PWD ssh -p $PORT root@$ip rm -rf $dst/crypto-config/ordererOrganizations
     ./expect_cmd.sh $PWD ssh -p $PORT root@$ip mkdir -p $dst/crypto-config/ordererOrganizations/$domain/orderers
     ./expect_cmd.sh $PWD scp -r -P $PORT $src  root@$ip:$dst/crypto-config/ordererOrganizations/$domain/orderers
     #echo "/root/myshell/expect_cmd.exp $password scp -r -P 8480 $src root@$ip:$dst/"
